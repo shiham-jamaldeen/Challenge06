@@ -14,7 +14,7 @@ let cityLongitude = 0;
 //global variables
 var now = moment();
 
-const apiKey = "830ba8e95b985da59eb3847cf4773328";
+const apiKey1 = "830ba8e95b985da59eb3847cf4773328";
 const apiKey2 = "47f166773e351368285402b79068ea73";
 
 //store city name input from the user
@@ -23,14 +23,14 @@ const apiKey2 = "47f166773e351368285402b79068ea73";
 //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
 searchByCityBtn.addEventListener("click", function () {
-  //console.log(document.getElementById("cityName").value)
+  let cityName = document.getElementById("cityName").value;
 
   const apiGeoURL =
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
-    document.getElementById("cityName").value +
+    cityName +
     "&limit=1" +
     "&appid=" +
-    apiKey;
+    apiKey1;
 
   fetch(apiGeoURL)
     .then(function (response) {
@@ -46,14 +46,14 @@ searchByCityBtn.addEventListener("click", function () {
         let cityLatitude = data[0].lat;
         let cityLongitude = data[0].lon;
         //call the weather function
-        getCurrentWeather(cityLatitude, cityLongitude);
+        getCurrentWeather(cityLatitude, cityLongitude, cityName);
       } else {
         console.log("wrong city");
         window.alert("City not found. Try again");
       }
     });
 });
-function getCurrentWeather(cityLatitude, cityLongitude) {
+function getCurrentWeather(cityLatitude, cityLongitude, cityName) {
   const apiCurrentWeatherURL =
     "https://api.openweathermap.org/data/2.5/onecall?" +
     "lat=" +
@@ -76,9 +76,23 @@ function getCurrentWeather(cityLatitude, cityLongitude) {
         console.log(data);
         //displayCurrentDateAndTime();
         //let cityHeading = document.createElement("h2");
+        //weather icon
+        let weatherIconURL =
+          "https://openweathermap.org/img/w/" +
+          data.current.weather[0].icon +
+          ".png";
 
+        let weatherIcon =
+          "<img src=" +
+          weatherIconURL +
+          " " +
+          "alt=" +
+          data.current.weather[0].description +
+          ">";
+        console.log(weatherIconURL + " " + weatherIcon);
         cityHeading.innerHTML =
-          data.timezone + "  " + "(" + now.format("dddd, MMMM, Do YYYY") + ")";
+          cityName + " " + "(" + now.format("DD/MM/YYYY") + ")" + weatherIcon;
+
         temp.innerHTML =
           "Temperature: " + data.current.temp + " degrees celsius";
         wind.innerHTML =
