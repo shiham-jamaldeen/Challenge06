@@ -46,9 +46,25 @@
             </div>
           </div>
           <div class="col-12 col-md-8" style="border: 2px dotted black">
-            <h2>"City" "Date"</h2>
+            <!--h2 id="currentCity"></h2-->
             <!--Weather Data for the date-->
-            <p>Weather data for the city goes here</p>
+            <div
+              class="card"
+              id="displayDataContainer"
+              style="margin-bottom: 20px"
+            >
+              <h2 id="cityTitle" class="card-header"></h2>
+              <p class="card-body-style" id="id-temp"></p>
+              <p class="card-body-style" id="id-wind"></p>
+              <p class="card-body-style" id="id-humidity"></p>
+              <p class="card-body-style" id="id-uv-index"></p>
+              <p class="card-body-style">UV Index Key</p>
+              <p class="card-body-style">
+                <span class="uv-index-low">Low</span
+                ><span class="uv-index-moderate">Moderate</span>
+                <span class="uv-index-high">High</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -68,6 +84,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript" src="./js/script.js"></script>
   </body>
 </html>
