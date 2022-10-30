@@ -27,6 +27,8 @@ const cityNameList = [];
 //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 function searchForCity(event) {
+  //clear();
+
   let cityName = document.getElementById("cityName").value;
 
   const apiGeoURL =
@@ -53,8 +55,7 @@ function searchForCity(event) {
         //call the weather function, to display current weather details
         getCurrentWeather(cityLatitude, cityLongitude, cityName);
 
-        //storeCityList(cityName);
-        //cityNameList.push(cityName);
+        storeCityList(cityName);
       } else {
         console.log("wrong city");
         window.alert("City not found. Try again");
@@ -91,7 +92,8 @@ function getCurrentWeather(cityLatitude, cityLongitude, cityName) {
         let weatherIcon = "<img src=" + weatherIconURL + ">";
 
         //print current weather elements to webpage
-        cityHeading.setAttribute("class", "card-header");
+        cityHeading.setAttribute("class", "five-day-header");
+
         cityHeading.innerHTML =
           cityName + " " + "(" + now.format("DD/MM/YYYY") + ")" + weatherIcon;
 
@@ -149,13 +151,17 @@ function getCurrentWeather(cityLatitude, cityLongitude, cityName) {
 }
 
 function displayFiveDayWeather(data) {
-  //some code here
+  let cardDeckContainer = document.getElementById("id-card-deck");
+  //clear the contents of the five-day forecast if previopusly printed
+  cardDeckContainer.innerHTML = "";
   let fiveDayForecastHeading = document.getElementById(
     "displayFiveDayForecastContainer"
   );
+
   fiveDayForecastHeading.innerHTML =
     "<h3 class='five-day-header'>" + "5-day forecast " + "</h3>";
-  let cardDeckContainer = document.getElementById("id-card-deck");
+  //let cardDeckContainer = document.getElementById("id-card-deck");
+
   for (i = 1; i <= 5; i++) {
     //create div element
     let displayCard = document.createElement("div");
@@ -194,8 +200,6 @@ function displayFiveDayWeather(data) {
     fiveDayHumidity.innerHTML = "Humidity: " + data.daily[i].humidity;
     displayCard.appendChild(fiveDayHumidity);
   }
-
-  //api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
 }
 function storeCityList(cityName) {
   //heading for search hist
@@ -213,6 +217,7 @@ function storeCityList(cityName) {
 
 //main
 searchByCityBtn.addEventListener("click", searchForCity);
+
 //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
 //https://www.geeksforgeeks.org/weather-app-using-vanilla-javascript/
