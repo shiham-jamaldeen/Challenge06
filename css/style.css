@@ -25,3 +25,16 @@
   margin: 5px;
   border: grey 1px;
 }
+.card-deck-body {
+  text-align: center;
+  padding: 5px;
+  margin: 5px;
+}
+.history-button {
+  margin-top: 10px;
+}
+.header {
+  text-align: center;
+  background-color: #008cb4;
+  color: whitesmoke;
+}

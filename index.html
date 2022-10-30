@@ -23,14 +23,14 @@
   </head>
   <body>
     <header>
-      <h1 class="jumbotron">Weather Dashboard</h1>
+      <h1 class="header jumbotron">Weather Dashboard</h1>
     </header>
     <main>
       <div class="container-fluid">
         <div class="row" id="searchByCityContainer">
-          <div class="col-12 col-md-4" style="border: 2px dotted black">
+          <div class="col-12 col-md-4">
             <div class="card">
-              <h2 class="card-header">Search for a city</h2>
+              <h3 class="card-header">Search for a city</h3>
               <div class="card-body form-group">
                 <input id="cityName" type="text" class="form-control" />
               </div>
@@ -43,47 +43,25 @@
                   Search
                 </button>
               </div>
+              </div>
+            <div class="card" id="search-history-container">
+            
             </div>
           </div>
-          <div class="col-12 col-md-8" style="border: 2px dotted black">
-            <!--h2 id="currentCity"></h2-->
-            <!--Weather Data for the date-->
-            <div
-              class="card"
-              id="displayDataContainer"
-              style="margin-bottom: 20px"
-            >
-              <h2 id="cityTitle" class="card-header"></h2>
+          <div class="col-12 col-md-8" >
+          <!--Weather Data for the date-->
+            <div id="displayDataContainer">
+              <h3  id="cityTitle"></h3>
               <p class="card-body-style" id="id-temp"></p>
               <p class="card-body-style" id="id-wind"></p>
               <p class="card-body-style" id="id-humidity"></p>
-              <p class="card-body-style" id="id-uv-index"></p>
-              <p class="card-body-style">
-                <span class="uv-index-low">Low</span
-                ><span class="uv-index-moderate">Moderate</span>
-                <span class="uv-index-high">High</span>
-              </p>
+              <p class="card-body-style" id="id-uv-index"></p-->
             </div>
             <!--end current weather-->
             <div id="displayFiveDayForecastContainer"></div>
-            <div class="card-deck" style="padding-top: 10px">
+            <div class="card-deck" style="padding-top: 10px" id="id-card-deck">
               <!--start five day weather-->
-              <div class="card">
-                <p>Weather data 1</p>
-              </div>
-              <div class="card">
-                <p>Weather data 2</p>
-              </div>
-              <div class="card">
-                <p>Weather data 3</p>
-              </div>
-              <div class="card">
-                <p>Weather data 4</p>
-              </div>
-              <div class="card">
-                <p>Weather data 5</p>
-              </div>
-            </div>
+              
             <!--end five day weather-->
           </div>
         </div>
