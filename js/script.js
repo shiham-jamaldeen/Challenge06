@@ -20,13 +20,13 @@ const apiKey1 = "830ba8e95b985da59eb3847cf4773328";
 const apiKey2 = "47f166773e351368285402b79068ea73";
 
 //array to store city list
-const cityNameList = [];
+let cityNameList = [];
 
 //store city name input from the user
 //URL for current weather
 //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 //api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-function searchForCity(event) {
+function searchForCityTextbox(event) {
   //clear();
 
   let cityName = document.getElementById("cityName").value;
@@ -207,16 +207,72 @@ function storeCityList(cityName) {
   //push cityname to array
   cityNameList.push(cityName);
   //also store city in local storage, when re-opening in browser
-  localStorage.setItem("city", cityNameList);
 
+  localStorage.setItem("city", JSON.stringify(cityNameList));
+  buildHistoryButtons(cityName);
+}
+function buildHistoryButtons(cityName) {
   let searchHistCity = document.createElement("button");
   searchHistCity.innerHTML = cityName;
   searchHistCity.setAttribute("class", "btn btn-info history-button");
+  searchHistCity.setAttribute("id", cityName);
   searchHistList.appendChild(searchHistCity);
+  //get value of key pressed and repeat the api call to fetch lat, long for city
+  searchHistCity.addEventListener("click", (event) => {
+    //console.log(event.target.innerHTML);
+    const apiGeoHistURL =
+      "http://api.openweathermap.org/geo/1.0/direct?q=" +
+      event.target.innerHTML +
+      "&limit=1" +
+      "&appid=" +
+      apiKey1;
+
+    fetch(apiGeoHistURL)
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        if (data.length !== 0) {
+          console.log(data);
+          console.log(data[0].lat);
+          console.log(data[0].lon);
+          //get the Latitude and Longitude of the city from api
+          let cityLatitude = data[0].lat;
+          let cityLongitude = data[0].lon;
+          //call the weather function, to display current weather details
+          getCurrentWeather(
+            cityLatitude,
+            cityLongitude,
+            event.target.innerHTML
+          );
+        } else {
+          console.log("wrong city");
+          window.alert("City not found. Try again");
+        }
+      });
+  });
+}
+
+function initialise() {
+  if (JSON.parse(localStorage.getItem("city")) === null) {
+    searchByCityBtn.addEventListener("click", searchForCityTextbox);
+  } else {
+    let storedCityList = [];
+    storedCityList.push(JSON.parse(localStorage.getItem("city")));
+
+    for (i = 0; i < storeCityList.length; i++) {
+      console.log(storeCityList.length);
+      console.log(storedCityList[i]);
+      buildHistoryButtons(storedCityList[i]);
+    }
+  }
 }
 
 //main
-searchByCityBtn.addEventListener("click", searchForCity);
+initialise();
+searchByCityBtn.addEventListener("click", searchForCityTextbox);
 
 //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
