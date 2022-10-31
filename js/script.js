@@ -30,7 +30,7 @@ function searchForCityTextbox(event) {
   let cityName = document.getElementById("cityName").value;
 
   const apiGeoURL =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     cityName +
     "&limit=1" +
     "&appid=" +
@@ -234,7 +234,7 @@ function buildHistoryButtons(cityName) {
   //get value of key pressed and repeat the api call to fetch latitude, longitude for city, when the button is pressed
   searchHistCity.addEventListener("click", (event) => {
     const apiGeoHistURL =
-      "http://api.openweathermap.org/geo/1.0/direct?q=" +
+      "https://api.openweathermap.org/geo/1.0/direct?q=" +
       event.target.innerHTML +
       "&limit=1" +
       "&appid=" +
