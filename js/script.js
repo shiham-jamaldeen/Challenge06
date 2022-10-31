@@ -1,7 +1,9 @@
+//global html elements
 var searchByCity = document.getElementById("searchByCityContainer");
 var searchByCityBtn = document.getElementById("sendCityQuery");
 var displayContainer = document.getElementById("displayDataContainer");
 var searchHistList = document.getElementById("search-history-container");
+//var searchHistButtonContainer = document.getElementById("search-hist-button-container");
 
 let temp = document.getElementById("id-temp");
 let wind = document.getElementById("id-wind");
@@ -13,22 +15,18 @@ let cityHeading = document.getElementById("cityTitle");
 
 let cityLatitude = 0;
 let cityLongitude = 0;
+//current date and time using moment library
 let now = moment();
+
+//array to store city list
+let cityNameList = [];
 
 //API Keys
 const apiKey1 = "830ba8e95b985da59eb3847cf4773328";
 const apiKey2 = "47f166773e351368285402b79068ea73";
 
-//array to store city list
-let cityNameList = [];
-
-//store city name input from the user
-//URL for current weather
-//https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
-//api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 function searchForCityTextbox(event) {
-  //clear();
-
+  //store city name input from the user, via the text box
   let cityName = document.getElementById("cityName").value;
 
   const apiGeoURL =
@@ -47,23 +45,23 @@ function searchForCityTextbox(event) {
     .then((data) => {
       if (data.length !== 0) {
         console.log(data);
-        console.log(data[0].lat);
-        console.log(data[0].lon);
         //get the Latitude and Longitude of the city from api
         let cityLatitude = data[0].lat;
         let cityLongitude = data[0].lon;
         //call the weather function, to display current weather details
         getCurrentWeather(cityLatitude, cityLongitude, cityName);
-
+        //call function to store city name in local strorage
         storeCityList(cityName);
       } else {
-        console.log("wrong city");
+        //print error message if city not found
         window.alert("City not found. Try again");
       }
     });
 }
 function getCurrentWeather(cityLatitude, cityLongitude, cityName) {
+  //assign css class to current weather container
   displayContainer.setAttribute("class", "card");
+
   const apiCurrentWeatherURL =
     "https://api.openweathermap.org/data/2.5/onecall?" +
     "lat=" +
@@ -84,7 +82,7 @@ function getCurrentWeather(cityLatitude, cityLongitude, cityName) {
     .then((data) => {
       if (data.length !== 0) {
         console.log(data);
-        //weather icon
+        //current weather icon
         let weatherIconURL =
           "https://openweathermap.org/img/wn/" +
           data.current.weather[0].icon +
@@ -145,30 +143,36 @@ function getCurrentWeather(cityLatitude, cityLongitude, cityName) {
         //call the five day weather function, for the same city
         displayFiveDayWeather(data);
       } else {
-        console.log("Cannot display display. Please try again");
+        //display error message if data cannot be retrievd from the weather api
+
+        window.alert("Unable to fetch data from server. Please try again");
       }
     });
 }
 
 function displayFiveDayWeather(data) {
+  //assign main five-day HTML container
   let cardDeckContainer = document.getElementById("id-card-deck");
-  //clear the contents of the five-day forecast if previopusly printed
+
+  //clear the contents of the five-day forecast if previously printed with values
   cardDeckContainer.innerHTML = "";
+
   let fiveDayForecastHeading = document.getElementById(
     "displayFiveDayForecastContainer"
   );
 
   fiveDayForecastHeading.innerHTML =
     "<h3 class='five-day-header'>" + "5-day forecast " + "</h3>";
-  //let cardDeckContainer = document.getElementById("id-card-deck");
 
+  //print 5-day forecast data items on the html page
   for (i = 1; i <= 5; i++) {
     //create div element
     let displayCard = document.createElement("div");
     displayCard.setAttribute("id", i);
     displayCard.setAttribute("class", "card");
     cardDeckContainer.appendChild(displayCard);
-    //create img element
+
+    //create five-day weather img element
     let fiveDayIconURL =
       "https://openweathermap.org/img/wn/" +
       data.daily[i].weather[0].icon +
@@ -178,7 +182,7 @@ function displayFiveDayWeather(data) {
     displayCard.appendChild(weatherIcon);
     //create data elements
     let forecastDate = document.createElement("p");
-    //get the date and convert it to moment.js format
+    //get the five-day "date" and convert it to moment.js format
     let dateString = moment.unix(data.daily[i].dt).format("DD/MM/YYYY");
     //print date
     forecastDate.innerHTML = dateString;
@@ -202,24 +206,33 @@ function displayFiveDayWeather(data) {
   }
 }
 function storeCityList(cityName) {
-  //heading for search hist
+  //check if city is in search history list
+  let existingCityInList = cityNameList.includes(cityName);
 
-  //push cityname to array
-  cityNameList.push(cityName);
-  //also store city in local storage, when re-opening in browser
+  if (existingCityInList === true) {
+    window.alert("City exist in the search history. Please try again");
+  } else {
+    //push cityname to array
+    cityNameList.push(cityName);
 
-  localStorage.setItem("city", JSON.stringify(cityNameList));
-  buildHistoryButtons(cityName);
+    //also store the city name array in local storage
+    localStorage.setItem("city", JSON.stringify(cityNameList));
+
+    //call function to create a button, for the city name. Add this to the history list
+    buildHistoryButtons(cityName);
+  }
 }
 function buildHistoryButtons(cityName) {
+  //create button element
   let searchHistCity = document.createElement("button");
   searchHistCity.innerHTML = cityName;
   searchHistCity.setAttribute("class", "btn btn-info history-button");
+  //assign unique name to button, which is needed if user clicks again
   searchHistCity.setAttribute("id", cityName);
   searchHistList.appendChild(searchHistCity);
-  //get value of key pressed and repeat the api call to fetch lat, long for city
+
+  //get value of key pressed and repeat the api call to fetch latitude, longitude for city, when the button is pressed
   searchHistCity.addEventListener("click", (event) => {
-    //console.log(event.target.innerHTML);
     const apiGeoHistURL =
       "http://api.openweathermap.org/geo/1.0/direct?q=" +
       event.target.innerHTML +
@@ -235,9 +248,6 @@ function buildHistoryButtons(cityName) {
       })
       .then((data) => {
         if (data.length !== 0) {
-          console.log(data);
-          console.log(data[0].lat);
-          console.log(data[0].lon);
           //get the Latitude and Longitude of the city from api
           let cityLatitude = data[0].lat;
           let cityLongitude = data[0].lon;
@@ -248,7 +258,7 @@ function buildHistoryButtons(cityName) {
             event.target.innerHTML
           );
         } else {
-          console.log("wrong city");
+          //If the "stored" city is incorrect, display error message
           window.alert("City not found. Try again");
         }
       });
@@ -256,26 +266,22 @@ function buildHistoryButtons(cityName) {
 }
 
 function initialise() {
+  //check if local storage has any values stored
   if (JSON.parse(localStorage.getItem("city")) === null) {
+    //if no then call the main function to lookup city latitude and longitude
     searchByCityBtn.addEventListener("click", searchForCityTextbox);
   } else {
+    //if not read items from local storage and create buttons
     let storedCityList = [];
-    storedCityList.push(JSON.parse(localStorage.getItem("city")));
+    storedCityList = JSON.parse(localStorage.getItem("city"));
 
-    for (i = 0; i < storeCityList.length; i++) {
-      console.log(storeCityList.length);
-      console.log(storedCityList[i]);
+    for (let i = 0; i < storedCityList.length; i++) {
       buildHistoryButtons(storedCityList[i]);
     }
+    //call function the main function to lookup city latitude and longitude
+    searchByCityBtn.addEventListener("click", searchForCityTextbox);
   }
 }
 
 //main
 initialise();
-searchByCityBtn.addEventListener("click", searchForCityTextbox);
-
-//https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
-
-//https://www.geeksforgeeks.org/weather-app-using-vanilla-javascript/
-//${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}
-//http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
