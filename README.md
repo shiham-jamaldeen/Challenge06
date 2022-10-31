@@ -39,9 +39,9 @@ https://shiham-jamaldeen.github.io/Challenge06/
 #### Image IV: Adding of several cities to list of cities / history
 
 
-#### Image V: Error message when trying to add same city (in list) - current session 
+#### Image V: Error message when trying to add same city to the search hist list during a current session 
 
-#### Image VI: Default application when loading with search history, from a previous locall storage
+#### Image VI: Default application when loading from local storage (history saved from the previous session)
 
 
 ## Furtherwork and improvements
