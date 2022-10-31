@@ -30,8 +30,10 @@ https://shiham-jamaldeen.github.io/Challenge06/
 ## Preview of the application and screenshots
 
 #### Image I: Default application when loading first time
+<img width="1373" alt="Screen Shot 2022-11-01 at 08 21 55" src="https://user-images.githubusercontent.com/112249220/199117842-04a4ac3b-01ea-451c-998d-916471fa4f2e.png">
 
 #### Image II: Error message when city not found
+
 
 #### Image III: Loading of current weather (with UV index) and 5-day forecast
 
