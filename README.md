@@ -27,9 +27,8 @@ https://shiham-jamaldeen.github.io/Challenge06/
 4. Your city entered in step 1 is automatically added to the **Search history** section. You can click on the city at any time to view the weather forecast again.<br/>
 **Note**: The **Search History** section is loaded with previous search history, after you have closed the browser window.
 
-
-
 ## Preview of the application and screenshots
+
 #### Image I: Default application when loading first time
 
 #### Image II: Error message when city not found
